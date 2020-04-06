@@ -2,7 +2,7 @@
 
 const request = require("request");
 
-const User = "Ervin Howell";
+const USER = "Ervin Howell";
 
 const getFilteredPost = new Promise(function (resolve, reject) {
   request("https://jsonplaceholder.typicode.com/users", function (
@@ -12,7 +12,7 @@ const getFilteredPost = new Promise(function (resolve, reject) {
   ) {
     let users = JSON.parse(body);
 
-    let found = users.find((person) => person.name === User);
+    let found = users.find((person) => person.name === USER);
 
     resolve(found);
   });
