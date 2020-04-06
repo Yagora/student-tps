@@ -31,11 +31,9 @@ const firstPromise = new Promise(function (resolve, reject) {
 
     found = users.find((person) => person.name === "Ervin Howell");
 
-    resolve(found);
+    resolve(console.log(found));
   });
-});
-
-const secondPromise = new Promise(function (resolve, reject) {
+}).then(() => {
   request("https://jsonplaceholder.typicode.com/posts", function (
     __,
     ___,
@@ -44,23 +42,8 @@ const secondPromise = new Promise(function (resolve, reject) {
     let posts = JSON.parse(body);
 
     const filteredPosts = posts.filter((post) => post.userId === found.id);
-    resolve(filteredPosts);
+    return console.log(filteredPosts);
   });
 });
 
-function returnFirstPromise() {
-  return firstPromise;
-}
-
-function returnSecondResult() {
-  return secondPromise;
-}
-
-async function finalResult() {
-  const firstResult = await returnFirstPromise();
-  console.log(firstResult);
-  const secondResult = await returnSecondResult();
-  console.log(secondResult);
-}
-
-finalResult();
+console.log(firstPromise);
