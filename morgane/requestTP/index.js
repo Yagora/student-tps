@@ -1,7 +1,6 @@
 "use strict";
 
 const request = require("request");
-let found;
 /* 
 request("https://jsonplaceholder.typicode.com/users", function (__, ___, body) {
   let users = JSON.parse(body);
@@ -21,7 +20,7 @@ request("https://jsonplaceholder.typicode.com/users", function (__, ___, body) {
   });
 }); */
 
-const firstPromise = new Promise(function (resolve, reject) {
+const getFilteredPost = new Promise(function (resolve, reject) {
   request("https://jsonplaceholder.typicode.com/users", function (
     __,
     ___,
@@ -29,11 +28,11 @@ const firstPromise = new Promise(function (resolve, reject) {
   ) {
     let users = JSON.parse(body);
 
-    found = users.find((person) => person.name === "Ervin Howell");
+    let found = users.find((person) => person.name === "Ervin Howell");
 
-    resolve(console.log(found));
+    resolve(found);
   });
-}).then(() => {
+}).then((found) => {
   request("https://jsonplaceholder.typicode.com/posts", function (
     __,
     ___,
@@ -42,8 +41,9 @@ const firstPromise = new Promise(function (resolve, reject) {
     let posts = JSON.parse(body);
 
     const filteredPosts = posts.filter((post) => post.userId === found.id);
-    return console.log(filteredPosts);
+    console.log(filteredPosts);
+    return filteredPosts;
   });
 });
 
-console.log(firstPromise);
+console.log(getFilteredPost);
