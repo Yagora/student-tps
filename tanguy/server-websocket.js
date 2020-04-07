@@ -1,8 +1,8 @@
 'use strict';
 
-const { Server } = require('ws');
+const WebSocket = require('ws');
 
-const wss = new Server({
+const wss = new WebSocket.Server({
     port: 8585
 });
 
