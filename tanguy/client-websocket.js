@@ -13,9 +13,12 @@ ws.on('open', function () {
 ws.on('message', data => {
     console.log(data);
 })
+const readline = require('readline');
 
-http.createServer(function (request, response) {
-    response.writeHead(200, {'Content-Type': 'text/plain'});
-    response.write('Le cours du bitcoin est de : 14 euro');
-    response.end();
-}).listen(8000)
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+rl.question('Ecrir un message dans le chat ', (answer) => {
+    ws.send(answer);
+});
