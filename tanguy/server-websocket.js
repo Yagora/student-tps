@@ -7,9 +7,12 @@ const wss = new Server({
 });
 
 wss.on('connection', ws => {
-    console.log('Un arrivant est la');
-    ws.send('Bonjour je suis content de te voir qui es tu ?');
+    ws.send('Bienvenue dans le tchat 2.0');
     ws.on('message', function (name) {
-        console.log(`Bienvenue, ${name} !`)
+        wss.clients.forEach(function (client) {
+            if (client !== ws && client.readyState === WebSocket.OPEN) {
+              client.send(data);
+            }
+        });
     });
 });
