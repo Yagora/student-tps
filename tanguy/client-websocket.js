@@ -1,13 +1,11 @@
 'use strict';
 
 const WebSocket = require('ws');
-const http = require('http');
 
 const ws = new WebSocket('ws://51.77.150.126:8585');
 
 ws.on('open', function () {
-    console.log('yes je suis connecté');
-    ws.send('coucouc c"est mon message')
+    console.log('\nMaintenant tu peux écrire dans le chat\n');
 });
 
 ws.on('message', data => {
@@ -19,6 +17,12 @@ const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
 });
-rl.question('Ecrir un message dans le chat ', (answer) => {
-    ws.send(answer);
-});
+
+function read() {
+    rl.question('', (answer) => {
+        ws.send('Tanguy : ' + answer);
+        read();
+    });
+}
+
+read();
