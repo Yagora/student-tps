@@ -8,7 +8,7 @@ const wss = new WebSocket.Server({
 
 wss.on('connection', ws => {
     ws.send('Bienvenue dans le tchat 2.0');
-    ws.on('message', function (name) {
+    ws.on('message', function (data) {
         wss.clients.forEach(function (client) {
             if (client !== ws && client.readyState === WebSocket.OPEN) {
               client.send(data);
