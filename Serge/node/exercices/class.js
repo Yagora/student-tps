@@ -25,6 +25,7 @@ class Personnage {
 };
 
 class Player extends Personnage {
+
     constructor() {
         super(100, 2, 10)
     };
@@ -33,19 +34,19 @@ class Player extends Personnage {
         if (degats >= 8) {
             console.log('+ MAGNIFIQUE !!! Le Joueur attaque et place sa botte secrète ! Il inflige un coup superbe équivalent à ' + degats + ' points de dégâts !!!');
         } else if (degats <= 2) {
-            console.log('+ OUPS !! Le Joueur attaque et tente de placer sa botte secrète... Il se précipite trop et rate son coup, infligeant seulement ' + degats + ' points de dégâts !');
+            console.log('+ OUPS ! Le Joueur attaque et tente de placer sa botte secrète... Il se précipite trop et rate son coup, infligeant seulement ' + degats + ' points de dégâts !');
         } else if (this.pointsDeVie === 1) {
             console.log('+ Le joueur place une attaque desespérée et inflige ' + degats + ' points de dégâts... Il se battra jusqu\'à son dernier souffle !!!');
         } else {
             console.log('+ Le Joueur attaque et inflige ' + degats + ' points de dégâts !');
-        }
+        };
         return degats;
     };
     subieDesDegats(degats) {
         super.subieDesDegats(degats);
         if (this.pointsDeVie <= 0) {
             console.log('  - RIP... Le joueur reçoit ' + degats + ' points de dégâts... Il est mort !');
-            console.log('+++ Le joueur s\'est battu vaillament et a tué ' + score + ' bestioles... Gloire à lui !! +++');
+            console.log('+++ Le joueur s\'est battu vaillament et a tué ' + totalGrosMonstres + ' gros monstres et ' + totalPetitsMonstres + ' petits monstres... Gloire à lui !! +++');
         } else if (this.pointsDeVie <= 10 && this.pointsDeVie > 1) {
             console.log('  - Le joueur n\'a plus que ' + this.pointsDeVie + ' points de vie... La fin approche !')
         } else if (this.pointsDeVie === 1) {
@@ -54,74 +55,102 @@ class Player extends Personnage {
             console.log('  - Le joueur encaisse difficilement l\'attaque en mode BERSERK de ' + degats + ' points de dégâts... Il accuse le coup !!')
         } else {
             console.log('  - Le joueur reçoit ' + degats + ' points de dégâts. Il lui reste ' + this.pointsDeVie + ' points de vie...');
-        }
+        };
     };
+
 };
 
 class Monster extends Personnage {
+
     constructor() {
         super(20, 1, 6)
     };
     Attaque() {
         const degats = super.Attaque();
         if (degats === 6) {
-            console.log('+ AARGHH !!! La bestiole attaque en mode BERSERK et inflige ' + degats + ' points de dégâts !!!');
+            console.log('+ AARGHH !!! Le gros monstre attaque en mode BERSERK et inflige ' + degats + ' points de dégâts !!!');
         } else {
-            console.log('+ La Bestiole attaque à son tour et inflige ' + degats + ' points de dégâts !');
-        }
+            console.log('+ Le gros monstre attaque à son tour et inflige ' + degats + ' points de dégâts !');
+        };
         return degats;
     };
     subieDesDegats(degats) {
         super.subieDesDegats(degats);
         if (this.pointsDeVie <= 0) {
-            console.log('  - La bestiole est morte !');
-            score = score + 1;
+            console.log('  - Le gros monstre est mort !');
+            totalGrosMonstres = totalGrosMonstres + 1;
         } else {
-            console.log('  - La bestiole reçoit ' + degats + ' points de dégâts. Il lui reste ' + this.pointsDeVie + ' points de vie...');
-        }
+            console.log('  - Le gros monstre reçoit ' + degats + ' points de dégâts. Il lui reste ' + this.pointsDeVie + ' points de vie...');
+        };
     };
+
 };
 
 class ChildMonster extends Personnage {
+
     constructor() {
         super(10, 0, 4)
     };
     Attaque() {
         const degats = super.Attaque();
-        console.log('+ La petite attaque à son tour Bestiole inflige ' + degats + ' points de dégâts !');
+        console.log('+ Le petit monstre attaque à son tour et inflige ' + degats + ' points de dégâts !');
         return degats;
     };
     subieDesDegats(degats) {
         super.subieDesDegats(degats);
         if (this.pointsDeVie <= 0) {
-            console.log('  - La petite bestiole est morte !');
-            score = score + 1;
+            console.log('  - Le petit monstre est mort !');
+            totalPetitsMonstres = totalPetitsMonstres + 1;
         } else {
-            console.log('  - La petite bestiole reçoit ' + degats + ' points de dégâts. Il lui reste ' + this.pointsDeVie + ' points de vie...');
-        }
+            console.log('  - Le petit monstre reçoit ' + degats + ' points de dégâts. Il lui reste ' + this.pointsDeVie + ' points de vie...');
+        };
     };
+
 };
 
-let score = 0;
 const joueur = new Player();
 
-function joueurVersusBestiole() {
-    const bestiole = new Monster();
-    while (joueur.pointsDeVie > 0 && bestiole.pointsDeVie > 0) {
-        bestiole.subieDesDegats(joueur.Attaque());
-        if (bestiole.pointsDeVie > 0) {
-            joueur.subieDesDegats(bestiole.Attaque());
-        };
-    };
-};
-function lancerLeJeu() {
-    while (joueur.pointsDeVie > 0) {
-        if (joueur.pointsDeVie === 100) {
-            console.log('***** Une bestiole arrive et attaque le joueur... Le premier combat commence !! *****')
+let unAutreCombatCommence = false;
+let totalGrosMonstres = 1;
+let totalPetitsMonstres = 0;
+
+function choixDuMonstre() {
+
+    if ((totalGrosMonstres + totalPetitsMonstres) % 3 == 0) {
+        const petitMonstre = new ChildMonster();
+        console.log('***** Le petit monstre #' + (totalPetitsMonstres + 1) + ' (soit le monstre ' + (totalGrosMonstres + totalPetitsMonstres) + ') attaque le joueur par surprise... Un nouveau combat commence !! *****');
+        return petitMonstre;
+    } else {
+        const grosMonstre = new Monster();
+        if (unAutreCombatCommence === true) {
+            console.log('***** Le GROS MONSTRE #' + totalGrosMonstres + ' (soit le monstre ' + (totalGrosMonstres + totalPetitsMonstres) + ') attaque le joueur... Un nouveau combat commence !! *****');
         } else {
-            console.log('***** Une autre bestiole arrive... Un nouveau combat commence !! *****')
+            console.log('***** Le GROS MONSTRE #' + totalGrosMonstres + ' (soit le monstre ' + (totalGrosMonstres + totalPetitsMonstres) + ') attaque le joueur... Le premier combat commence !! *****');
         };
-        joueurVersusBestiole();
+        return grosMonstre;
     };
+
 };
+
+function joueurVersusMonstre() {
+
+    let unMonstre = choixDuMonstre();
+    while (joueur.pointsDeVie > 0 && unMonstre.pointsDeVie > 0) {
+        unMonstre.subieDesDegats(joueur.Attaque());
+        if (unMonstre.pointsDeVie > 0) {
+            joueur.subieDesDegats(unMonstre.Attaque());
+        };
+    };
+    unAutreCombatCommence = true;
+
+};
+
+function lancerLeJeu() {
+
+    while (joueur.pointsDeVie > 0) {
+        joueurVersusMonstre();
+    };
+    
+};
+
 lancerLeJeu();
